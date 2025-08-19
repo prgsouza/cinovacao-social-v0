@@ -7,7 +7,7 @@ Metodologias como <b>Speedplay</b> e <b>Vibecoding</b> guiam nosso processo cria
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/built%with-v0.app-blue" alt="v0.app">
+  <img src="https://img.shields.io/badge/built%20with-v0.app-blue" alt="v0.app">
   <img src="https://img.shields.io/badge/mvp-v1-green" alt="mvp">
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-orange" alt="status">
 </p>
