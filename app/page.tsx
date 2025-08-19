@@ -1,14 +1,40 @@
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, Package } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Users, Package, LogOut } from "lucide-react"
 import { PageContainer } from "@/components/page-container"
+import { signOut } from "@/lib/actions"
 
-export default function HomePage() {
+export default async function HomePage() {
+  // If Supabase is not configured, show setup message directly
+  if (!isSupabaseConfigured) {
+    return (
+      <PageContainer>
+        <div className="flex min-h-screen items-center justify-center">
+          <h1 className="text-2xl font-bold mb-4 text-[#7f6e62]">Conecte o Supabase para começar</h1>
+        </div>
+      </PageContainer>
+    )
+  }
+
+  // Get the user from the server
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // If no user, redirect to login
+  if (!user) {
+    redirect("/auth/login")
+  }
+
   return (
     <PageContainer>
       <div className="container mx-auto px-4 py-8">
-        {/* Header with Logo */}
+        {/* Header with Logo and User Info */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <Image
@@ -21,6 +47,17 @@ export default function HomePage() {
           </div>
           <h1 className="text-4xl font-bold text-[#7f6e62] mb-2">Hub GRIS</h1>
           <p className="text-lg text-[#7f6e62]/80">Sistema de Gestão para ONG</p>
+
+          {/* User info and logout */}
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <p className="text-sm text-[#7f6e62]">Bem-vindo, {user.email}</p>
+            <form action={signOut}>
+              <Button type="submit" variant="outline" size="sm" className="border-[#d5c4aa] bg-transparent">
+                <LogOut className="h-4 w-4 mr-2" />
+                Sair
+              </Button>
+            </form>
+          </div>
         </div>
 
         {/* Navigation Cards */}
